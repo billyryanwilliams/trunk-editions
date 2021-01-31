@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>TRUNK editions - Short run publishers for artists</title>
+  <meta name="description" content="The short run publishers for artists."></meta>
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <style>
+    @font-face {
+      font-family: 'Bebas';
+      src: url('/fonts/BebasNeueBold.otf');
+    }
+  body {
+  font-family: 'Bebas', Arial, Helvetica, sans-serif;
+  background: #ffdada;
+}
+h1 {
+  font-family: 'Bebas', Arial, Helvetica, sans-serif;
+}
+
+.tile-container {
+  display: inline-block;
+  left: 32px;
+  position: fixed;
+  width: calc(100vw - 64px);
+  height: calc(100vh - 64px);
+  overflow: hidden;
+  top: 32px;
+  box-sizing: border-box;
+}
+
+.title {
+  background: transparent;
+  padding: 24px;
+  left: 50%;
+  position: absolute;
+  font-size: 80px;
+  top: calc(50% - 32px);
+  text-align: center;
+  transform: translate3d(-50%, -50%, 0);
+  transition: 5s ease;
+  z-index: 99;
+  will-change: background;
+}
+.title:hover {
+  background: #ffdada;
+}
+.title .title__sub {
+  display: block;
+  font-size: 59px;
+}
+
+.tile {
+  position: relative;
+  vertical-align: top;
+  display: inline-block;
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+}
+.tile::before {
+  background-color: rgba(255, 255, 255, 0.2);
+  content: "";
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 99;
+}
+
+.tile:after {
+  content: "";
+  background-color: #cc1c32;
+  width: 6px;
+  height: 6px;
+  position: absolute;
+  top: 100%;
+  right: 0px;
+  transform: translate(50%, -50%);
+  z-index: 2;
+  line-height: 1;
+}
+
+/*-- no grid --*/
+.noGrid .tile {
+  border-right: 0px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 0px solid rgba(0, 0, 0, 0.5);
+}
+
+.noGrid .tile:after {
+  content: none;
+}
+  </style>
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-P28MZ9H');</script>
+  <!-- End Google Tag Manager -->
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P28MZ9H"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <main>
+    <div class="tile-container">
+      <h1 class="title">TRUNK <span class="title__sub">EDITIONS</span></h1>
+    </div>
+  </main>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js"></script>
+  <script>
+    // options
+var options = {
+  imgSrc : "/img/bg.jpg",
+  containerName : "tile-container",
+  grid : false,
+  tileWidth : 120,
+  tileHeight : 120,
+  mouseTrail:true
+}
+
+// ----------------------------------------------------------
+var tileWidth, tileHeight, numTiles, tileHolder, tileContainer;
+var directionX, directionY;
+var imgOriginalWidth, imgOriginalHeight;
+var imgCoverWidth, imgCoverHeight;
+var imageLoaded = false;
+
+numTiles=0;
+tileWidth = options.tileWidth;
+tileHeight = options.tileHeight;
+
+tileContainer = document.getElementsByClassName(options.containerName)[0];
+
+function init(){
+  if(options.grid == false)tileContainer.className += " noGrid";
+  
+  //preload image and get original image size, then create tiles
+  var image = new Image();
+  image.src = options.imgSrc;
+  image.onload = function(e){
+    imageLoaded = true;
+    imgOriginalWidth = e.currentTarget.width;
+    imgOriginalHeight = e.currentTarget.height;
+    
+    createTileHolder();
+    checkTileNumber();
+    positionImage();
+    addListeners();
+  };  
+}
+
+function resizeHandler()
+{
+  if(imageLoaded == false)return;
+  
+  //not working yet
+  
+  checkTileNumber();
+  positionImage();
+}
+
+function createTileHolder(){
+  tileHolder = document.createElement('div');
+  tileHolder.className = "tileHolder";
+  tileHolder.style.position = "absolute";
+  tileHolder.style.top = "50%";
+  tileHolder.style.left = "50%";
+  tileHolder.style.transform = "translate(-50%, -50%)";
+  tileContainer.appendChild(tileHolder);
+}
+
+function checkTileNumber()
+{
+  tileHolder.style.width = Math.ceil(tileContainer.offsetWidth / tileWidth) * tileWidth + "px";
+  tileHolder.style.height = Math.ceil(tileContainer.offsetHeight / tileHeight) * tileHeight + "px";
+  
+  var tilesFitInWindow = Math.ceil(tileContainer.offsetWidth / tileWidth) * Math.ceil(tileContainer.offsetHeight / tileHeight);
+  if(numTiles < tilesFitInWindow){
+    for (var i=0, l=tilesFitInWindow-numTiles; i < l; i++){
+      addTiles();
+    }
+  }else if(numTiles > tilesFitInWindow){
+      for (var i=0, l=numTiles-tilesFitInWindow; i < l; i++){
+        removeTiles();
+      }
+  }  
+}
+
+
+function addTiles()
+{
+  var tile = document.createElement('div');
+  tile.className = "tile";  
+  
+  //maintain aspect ratio
+  imgCoverWidth = tileContainer.offsetWidth;
+  imgCoverHeight = tileContainer.offsetHeight;
+
+  if(imgOriginalWidth > imgOriginalHeight){
+        imgCoverHeight = imgOriginalHeight / imgOriginalWidth * imgCoverWidth;
+    }else{
+        imgCoverWidth = imgOriginalWidth / imgOriginalHeight * imgCoverHeight;     
+    } 
+  
+  
+  tile.style.background = 'url("'+options.imgSrc+'") no-repeat';
+  tile.style.backgroundSize  = imgCoverWidth + "px " +  imgCoverHeight + "px";
+  tile.style.width = tileWidth + "px";
+  tile.style.height = tileHeight + "px";
+  document.querySelectorAll(".tileHolder")[0].appendChild(tile);
+  
+  tile.addEventListener("mouseover", moveImage);  
+  
+  numTiles++;
+}
+
+function removeTiles()
+{
+  var tileToRemove = document.querySelectorAll(".tile")[0];
+  tileToRemove.removeEventListener("mouseover", moveImage); 
+  
+  TweenMax.killTweensOf(tileToRemove);
+  tileToRemove.parentNode.removeChild(tileToRemove);
+  
+  numTiles--;
+}
+
+function addListeners(){
+ if(options.mouseTrail){
+    document.addEventListener('mousemove', function (event) {
+      directionX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+      directionY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+    });
+  }
+}
+
+function positionImage(){
+  for(var t=0, l=numTiles; t < l; t++)
+  {
+    var nowTile = document.querySelectorAll(".tile")[t];
+   
+    var left = (-nowTile.offsetLeft - (tileHolder.offsetLeft - (tileHolder.offsetWidth/2)));
+    var top = (-nowTile.offsetTop - (tileHolder.offsetTop - (tileHolder.offsetHeight/2)));
+    
+    nowTile.style.backgroundPosition = left + "px " + top + "px";
+  }
+}
+
+function resetImage(nowTile){    
+  var left = (-nowTile.offsetLeft - (tileHolder.offsetLeft - (tileHolder.offsetWidth/2)));
+  var top = (-nowTile.offsetTop - (tileHolder.offsetTop - (tileHolder.offsetHeight/2)));
+  
+  
+  TweenMax.to(nowTile, 1, {backgroundPosition:left + "px " + top + "px", ease:Power1.easeInOut});
+}
+
+
+function moveImage(e){
+  var nowTile = e.currentTarget
+  var minWidth = -tileContainer.offsetWidth+nowTile.offsetWidth;
+  var minHeight = -tileContainer.offsetHeight+nowTile.offsetHeight;
+  var nowLeftPos = (-nowTile.offsetLeft - (tileHolder.offsetLeft - (tileHolder.offsetWidth/2)));
+  var nowTopPos = (-nowTile.offsetTop - (tileHolder.offsetTop - (tileHolder.offsetHeight/2)))
+  var offset = 60;
+  var left = nowLeftPos;
+  var top = nowTopPos;
+    
+  if(options.mouseTrail){
+    //direction-aware movement
+    if(directionX > 0){
+      left = nowLeftPos + offset;
+    }else if(directionX < 0){
+      left = nowLeftPos - offset;
+    }
+    
+    if(directionY > 0){
+      top = nowTopPos + offset;
+    }else if(directionY < 0){
+      top = nowTopPos - offset;
+    }
+  }else{
+    //random movement
+    left = getRandomInt(nowLeftPos - offset , nowLeftPos + offset);
+    top = getRandomInt(nowTopPos - offset, nowTopPos + offset);
+  }
+    
+  // bounds
+  if(left < minWidth)left=minWidth;
+  if(left > 0)left=0;
+  if(top < minHeight)top=minHeight;
+  if(top > 0)top=0;
+  
+  //tween
+  TweenMax.to(nowTile, 1.5, {backgroundPosition:left + "px " + top + "px", ease:Power1.easeOut, onComplete:resetImage, onCompleteParams:[nowTile]});
+}
+
+///////////////////////////////////////////////////////////////////
+
+init();
+// handle event
+//window.addEventListener("optimizedResize", resizeHandler);
+
+////////////////////////UTILS//////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+(function() {
+    var throttle = function(type, name, obj) {
+        obj = obj || window;
+        var running = false;
+        var func = function() {
+            if (running) { return; }
+            running = true;
+             requestAnimationFrame(function() {
+                obj.dispatchEvent(new CustomEvent(name));
+                running = false;
+            });
+        };
+        obj.addEventListener(type, func);
+    };
+
+    /* init - you can init any event */
+    throttle("resize", "optimizedResize");
+})();
+
+  </script>
+</body>
+
+</html>

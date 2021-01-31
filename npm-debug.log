@@ -1,0 +1,29 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/Users/Billy/.npm-packages/bin/npm',
+1 verbose cli   'i',
+1 verbose cli   '-g',
+1 verbose cli   'now' ]
+2 info using npm@3.5.3
+3 info using node@v10.15.3
+4 verbose stack Error: Cannot find module 'internal/util/types'
+4 verbose stack     at Function.Module._resolveFilename (internal/modules/cjs/loader.js:582:15)
+4 verbose stack     at Function.Module._load (internal/modules/cjs/loader.js:508:25)
+4 verbose stack     at Module.require (internal/modules/cjs/loader.js:637:17)
+4 verbose stack     at require (internal/modules/cjs/helpers.js:22:18)
+4 verbose stack     at evalmachine.<anonymous>:44:31
+4 verbose stack     at Object.<anonymous> (/Users/Billy/.npm-packages/lib/node_modules/npm/node_modules/cmd-shim/node_modules/graceful-fs/fs.js:11:1)
+4 verbose stack     at Module._compile (internal/modules/cjs/loader.js:701:30)
+4 verbose stack     at Object.Module._extensions..js (internal/modules/cjs/loader.js:712:10)
+4 verbose stack     at Module.load (internal/modules/cjs/loader.js:600:32)
+4 verbose stack     at tryModuleLoad (internal/modules/cjs/loader.js:539:12)
+5 verbose cwd /Users/Billy/BitBucket/iambillwill
+6 error Darwin 18.7.0
+7 error argv "/usr/local/bin/node" "/Users/Billy/.npm-packages/bin/npm" "i" "-g" "now"
+8 error node v10.15.3
+9 error npm  v3.5.3
+10 error code MODULE_NOT_FOUND
+11 error Cannot find module 'internal/util/types'
+12 error If you need help, you may report this error at:
+12 error     <https://github.com/npm/npm/issues>
+13 verbose exit [ 1, true ]
